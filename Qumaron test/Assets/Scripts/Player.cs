@@ -23,10 +23,13 @@ public class Player : FlyUnit
     private bool _move = false;
     private bool _gravityEnable = false;
     private bool _startFLy = true;
+   
+    public Animator anim;
 
     void Start()
     {
-        
+        anim = GetComponent<Animator>();        
+        anim.gameObject.GetComponent<Animator>().enabled = false;
         _speed = 0f;
         _rb = GetComponent<Rigidbody>();
         _starPosition = 0;
@@ -101,6 +104,7 @@ public class Player : FlyUnit
         {
             _startFLy = false;
             _rb.useGravity = false;
+            anim.gameObject.GetComponent<Animator>().enabled = true;
         }
 
         if (_speed < _maxPlaneSpeed / 2 && _gravityEnable && _rb.useGravity == false)
@@ -123,7 +127,7 @@ public class Player : FlyUnit
         else
             _gasAlert.SetActive(false);
     }
-    
+
 
     //рух
     private void FlyToStar()
@@ -132,7 +136,8 @@ public class Player : FlyUnit
 
         Quaternion lookRotation = Quaternion.LookRotation((waypoints[_starPosition].position - transform.position).normalized);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 2f * Time.deltaTime);
-    }
+
+    }       
 
     void IncreaseIndex()
     {
