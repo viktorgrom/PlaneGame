@@ -121,7 +121,7 @@ public class Player : FlyUnit
 
         float time = 0;
 
-        while (time < 1)
+        while (time < 0.5)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, time);
             time += Time.deltaTime * 1f;
