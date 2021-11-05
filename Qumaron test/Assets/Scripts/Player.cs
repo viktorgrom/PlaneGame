@@ -18,6 +18,7 @@ public class Player : FlyUnit
     
     [SerializeField] private GameObject _gasAlert;
     [SerializeField] private GameObject _gameOverBtn;
+    [SerializeField] private GameObject _buttonEffect;
 
     private bool _move = false;
     private bool _gravityEnable = false;
@@ -33,6 +34,7 @@ public class Player : FlyUnit
         _gasEffectPlane.SetActive(false);       
         _gasAlert.SetActive(false);
         _gameOverBtn.SetActive(false);
+        _buttonEffect.SetActive(false);
         _gasBtnBar.fillAmount = _gasImageFill;
 
         
@@ -63,13 +65,16 @@ public class Player : FlyUnit
             _gasImageFill -= 0.08f * Time.deltaTime;
             _gasBtnBar.fillAmount = _gasImageFill;
             _gasEffectPlane.SetActive(true);
-            
-            
+            _buttonEffect.SetActive(true);
+
+
+
         }
         else if(!_move && _speed > 0)
         {
             _speed -= _windForce * Time.deltaTime;
             _gasEffectPlane.SetActive(false);
+            _buttonEffect.SetActive(false);
         }
 
         FlyToStar();
