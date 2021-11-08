@@ -7,6 +7,10 @@ public class Player : FlyUnit
 {
     [SerializeField] private Transform[] waypoints;        
     private Rigidbody _rb;
+   
+    public Transform cenOfMassTrasform;
+   // public Vector3 cenOfMassTrasformV;
+    //public Vector3 cenOfMassTrasformBack;
 
     private int _starPosition;    
     [SerializeField] private Image _planePicture;  
@@ -24,7 +28,18 @@ public class Player : FlyUnit
     private bool _gravityEnable = false;
     private bool _startFLy = true;
    
-    public Animator anim;
+    private Animator anim;
+
+
+    public Vector3 LookTargetPosition;
+
+    private float nextActionTime = 0.0f;
+    public float period = 0.1f;
+
+    private void Awake()
+    {
+        GetComponent<Rigidbody>().centerOfMass = Vector3.Scale(cenOfMassTrasform.localPosition, transform.localScale);
+    }
 
     void Start()
     {
@@ -39,8 +54,12 @@ public class Player : FlyUnit
         _gameOverBtn.SetActive(false);
         _buttonEffect.SetActive(false);
         _gasBtnBar.fillAmount = _gasImageFill;
+        //cenOfMassTrasformBack.position = cenOfMassTrasform.transform.position;
 
         
+
+       // waypoints[_starPosition].position = new Vector3(waypoints[_starPosition].position.x + 50, 0, 0);
+
     }
 
     //зібрав зірку
@@ -62,35 +81,67 @@ public class Player : FlyUnit
       
     void Update()
     {
-        if(_move && _speed <= _maxPlaneSpeed && !_gameOver)
+        if (_move && _speedUp <= _maxUpdPlaneSpeed && !_gameOver)
+            _speedUp += _accelerateUpForce * Time.deltaTime;
+
+        if (_move && _speed <= _maxForvardPlaneSpeed && !_gameOver)
         {
-            _speed += _gasForce * Time.deltaTime; 
+            _speed += _accelerateForfardForce * Time.deltaTime;
+            
             _gasImageFill -= 0.08f * Time.deltaTime;
             _gasBtnBar.fillAmount = _gasImageFill;
             _gasEffectPlane.SetActive(true);
             _buttonEffect.SetActive(true);
-
-
+           
+           // GetComponent<Rigidbody>().centerOfMass = cenOfMassTrasform;
 
         }
         else if(!_move && _speed > 0)
         {
             _speed -= _windForce * Time.deltaTime;
+            _speedUp -= _gravityForce * Time.deltaTime;
             _gasEffectPlane.SetActive(false);
             _buttonEffect.SetActive(false);
+
+
+           // GetComponent<Rigidbody>().centerOfMass = cenOfMassTrasformBack;
         }
 
+       
         FlyToStar();
         AlertSpeed();
-        CheckGravitation();
+        //CheckGravitation();
 
         if (_speed <= 0 && _gravityEnable)
         {
             GameOver();
         }
-            
 
-    } 
+
+
+               
+        //зміна віртуальної позиції зірки
+        if (Time.time > nextActionTime)
+        {
+            nextActionTime += period;
+
+            Vector3 pos;
+            pos = waypoints[_starPosition].position;
+
+            float x;
+            float y;
+            float z;
+
+            x = Random.Range(-0.1f, 0.1f);
+            y = Random.Range(-0.1f, 0.1f);
+            z = Random.Range(-0.1f, 0.1f);
+            pos = new Vector3(pos.x + x, pos.y + y, pos.z + z);
+
+            LookTargetPosition = pos;            
+        }
+
+
+    }
 
     private void GameOver()
     {
@@ -98,7 +149,7 @@ public class Player : FlyUnit
         _gameOverBtn.SetActive(true);
     }
     //гравітація
-    private void CheckGravitation()
+    /*private void CheckGravitation()
     {
         if (_speed > _maxPlaneSpeed / 2 && _startFLy)
         {
@@ -118,26 +169,38 @@ public class Player : FlyUnit
 
         if (_speed >= _maxPlaneSpeed/2)
             _gravityEnable = true;
-    }
+    }*/
     //загроза падінню
     private void AlertSpeed()
     {
-        if (_speed < _maxPlaneSpeed / 2 && !_startFLy)
+        if (_speed < _maxForvardPlaneSpeed / 2 && !_startFLy)
             _gasAlert.SetActive(true);
         else
             _gasAlert.SetActive(false);
     }
-
+   
 
     //рух
     private void FlyToStar()
     {
-        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+        
 
-        Quaternion lookRotation = Quaternion.LookRotation((waypoints[_starPosition].position - transform.position).normalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 2f * Time.deltaTime);
+        Quaternion lookRotation = Quaternion.LookRotation((LookTargetPosition - transform.position).normalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 2f * Time.deltaTime);      
+    }
 
-    }       
+    private void FixedUpdate()
+    {
+        _rb.AddForce(transform.forward * _speed * Time.deltaTime);
+
+        if (_rb.position.y < (waypoints[_starPosition].position.y) && _speed > 0)
+        {
+            _rb.AddForce(transform.up * _speedUp * Time.deltaTime);
+        }
+
+        //_rb.AddForce(transform.right * (upPlaneForce / 5) * Time.deltaTime);
+
+    }
 
     void IncreaseIndex()
     {
@@ -147,5 +210,12 @@ public class Player : FlyUnit
             _starPosition = 0;
         }       
         
+    }
+
+    private void OnDrawGizmos()
+    {
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(GetComponent<Rigidbody>().worldCenterOfMass, 0.1f);
     }
 }

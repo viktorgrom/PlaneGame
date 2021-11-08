@@ -5,9 +5,13 @@ using UnityEngine;
 public abstract class FlyUnit : MonoBehaviour
 {
     [SerializeField] protected float _speed;
-    protected float _maxPlaneSpeed = 2f;
-    protected float _windForce = 0.1f;
-    protected float _gasForce = 0.3f;
+    [SerializeField] protected float _speedUp;
+    protected float _maxForvardPlaneSpeed = 2000f;
+    protected float _maxUpdPlaneSpeed = 1000f;   
+    protected float _windForce = 500f;
+    protected float _gravityForce = 200f;
+    protected float _accelerateForfardForce = 750f;
+    protected float _accelerateUpForce = 200f;
 
     
 }
