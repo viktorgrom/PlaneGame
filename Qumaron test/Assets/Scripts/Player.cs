@@ -28,14 +28,15 @@ public class Player : FlyUnit
     private bool _gravityEnable = false;
     private bool _startFLy = true;
    
-    private Animator anim;
+    private Animator _anim;
 
 
     public Vector3 LookTargetPosition;
+    public float distPlaneToTarget;
 
-    private float nextActionTime = 0.0f;
-    public float period = 0.1f;
+    public float timePassStarPlace = 0.0f;
 
+    
     private void Awake()
     {
         GetComponent<Rigidbody>().centerOfMass = Vector3.Scale(cenOfMassTrasform.localPosition, transform.localScale);
@@ -43,8 +44,8 @@ public class Player : FlyUnit
 
     void Start()
     {
-        anim = GetComponent<Animator>();        
-        anim.gameObject.GetComponent<Animator>().enabled = false;
+        _anim = GetComponent<Animator>();        
+        _anim.gameObject.GetComponent<Animator>().enabled = false;
         _speed = 0f;
         _rb = GetComponent<Rigidbody>();
         _starPosition = 0;
@@ -54,11 +55,8 @@ public class Player : FlyUnit
         _gameOverBtn.SetActive(false);
         _buttonEffect.SetActive(false);
         _gasBtnBar.fillAmount = _gasImageFill;
-        //cenOfMassTrasformBack.position = cenOfMassTrasform.transform.position;
 
-        
-
-       // waypoints[_starPosition].position = new Vector3(waypoints[_starPosition].position.x + 50, 0, 0);
+        //LookTargetPosition = waypoints[_starPosition].position;
 
     }
 
@@ -117,29 +115,30 @@ public class Player : FlyUnit
             GameOver();
         }
 
-
-
-               
         //зміна віртуальної позиції зірки
-        if (Time.time > nextActionTime)
+       /* distPlaneToTarget = Vector3.Distance(waypoints[_starPosition].position, transform.position);
+
+        if(distPlaneToTarget > 8f)
         {
-            nextActionTime += period;
+            timePassStarPlace += Time.deltaTime;
 
-            Vector3 pos;
-            pos = waypoints[_starPosition].position;
+            if (timePassStarPlace >= 2f)
+            {                               
 
-            float x;
-            float y;
-            float z;
+                float x;
+                float y;
+                float z;
+                x = Random.Range(-0.1f, 0.1f);
+                y = Random.Range(-0.1f, 0.1f);
+                z = Random.Range(-0.1f, 0.1f);
 
-            x = Random.Range(-0.1f, 0.1f);
-            y = Random.Range(-0.1f, 0.1f);
-            z = Random.Range(-0.1f, 0.1f);
-            pos = new Vector3(pos.x + x, pos.y + y, pos.z + z);
-
-            LookTargetPosition = pos;            
-        }
-
+                LookTargetPosition = new Vector3(waypoints[_starPosition].position.x + x,
+                    waypoints[_starPosition].position.y + y, waypoints[_starPosition].position.z + z);
+               
+                timePassStarPlace = 0f;
+            }                            
+        }*/
+        
 
     }
 
@@ -184,8 +183,7 @@ public class Player : FlyUnit
     private void FlyToStar()
     {
         
-
-        Quaternion lookRotation = Quaternion.LookRotation((LookTargetPosition - transform.position).normalized);
+        Quaternion lookRotation = Quaternion.LookRotation((waypoints[_starPosition].position - transform.position).normalized);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 2f * Time.deltaTime);      
     }
 
@@ -197,8 +195,8 @@ public class Player : FlyUnit
         {
             _rb.AddForce(transform.up * _speedUp * Time.deltaTime);
         }
-
-        //_rb.AddForce(transform.right * (upPlaneForce / 5) * Time.deltaTime);
+       
+        // _rb.AddForce(transform.right * (_speed / 8) * Time.deltaTime);              
 
     }
 

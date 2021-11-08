@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//скріпт для тестів
 public class PlayerFly : MonoBehaviour
 {
     public float speed;

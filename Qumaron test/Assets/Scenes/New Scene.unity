@@ -6493,6 +6493,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1273250633766584795, guid: 37b309f501fa841428d3c82195d96c9b, type: 3}
+    - {fileID: 1273250633766584794, guid: 37b309f501fa841428d3c82195d96c9b, type: 3}
+    - {fileID: 1273250633766584797, guid: 37b309f501fa841428d3c82195d96c9b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 37b309f501fa841428d3c82195d96c9b, type: 3}
 --- !u!4 &691068692 stripped
 Transform:
@@ -6640,30 +6642,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &754029885 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1273250633766584793, guid: 37b309f501fa841428d3c82195d96c9b, type: 3}
-  m_PrefabInstance: {fileID: 689686944}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &754029887
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754029885}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 86ad76c9941ecdc48a3b3679b8a84d43, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &765711934
 GameObject:
   m_ObjectHideFlags: 3
@@ -7704,27 +7682,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1448647613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448647609}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4f98e16feb5577468aa6719d06c00cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2000
-  upPlaneForce: 1000
-  cenOfMassTrasform: {fileID: 87038218}
-  waypoints:
-  - {fileID: 828165214}
-  - {fileID: 1784139039}
-  - {fileID: 104905836}
-  - {fileID: 2126049921}
-  _planePicture: {fileID: 0}
 --- !u!1 &1518341778
 GameObject:
   m_ObjectHideFlags: 0
