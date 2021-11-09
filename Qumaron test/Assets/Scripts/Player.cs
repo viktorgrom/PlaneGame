@@ -9,8 +9,8 @@ public class Player : FlyUnit
     private Rigidbody _rb;
    
     public Transform cenOfMassTrasform;
-   // public Vector3 cenOfMassTrasformV;
-    //public Vector3 cenOfMassTrasformBack;
+    // public Vector3 cenOfMassTrasformV;
+    // public Vector3 cenOfMassTrasformBack;
 
     private int _starPosition;    
     [SerializeField] private Image _planePicture;  
@@ -30,13 +30,14 @@ public class Player : FlyUnit
    
     private Animator _anim;
 
-
-    public Vector3 LookTargetPosition;
+    //для зміни віртуального положення зірки
+    /*public Vector3 LookTargetPosition;
     public float distPlaneToTarget;
-
-    public float timePassStarPlace = 0.0f;
-
+    public float timePassStarPlace = 0.0f;*/
     
+    private Vector3 _randomVector;
+
+
     private void Awake()
     {
         GetComponent<Rigidbody>().centerOfMass = Vector3.Scale(cenOfMassTrasform.localPosition, transform.localScale);
@@ -56,7 +57,10 @@ public class Player : FlyUnit
         _buttonEffect.SetActive(false);
         _gasBtnBar.fillAmount = _gasImageFill;
 
+        //для зміни віртуального положення зірки
         //LookTargetPosition = waypoints[_starPosition].position;
+
+        StartCoroutine(Coroutine_you_want_to_run());
 
     }
 
@@ -195,9 +199,30 @@ public class Player : FlyUnit
         {
             _rb.AddForce(transform.up * _speedUp * Time.deltaTime);
         }
-       
-        // _rb.AddForce(transform.right * (_speed / 8) * Time.deltaTime);              
+        
 
+        _rb.AddForce(_randomVector * (_speed / 7) * Time.deltaTime);       
+
+    }
+
+    private IEnumerator Coroutine_you_want_to_run()
+    {
+        int _randomNumber;
+        _randomNumber = Random.Range(0, 4);       
+
+        if (_randomNumber == 0)
+            _randomVector = Vector3.right;
+        else if (_randomNumber == 1)
+            _randomVector = Vector3.left;
+        else if (_randomNumber == 2)
+            _randomVector = Vector3.down;
+        else
+            _randomVector = Vector3.up;
+
+        
+        yield return new WaitForSeconds(3);
+
+        StartCoroutine(Coroutine_you_want_to_run());
     }
 
     void IncreaseIndex()
