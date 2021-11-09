@@ -36,6 +36,7 @@ public class Player : FlyUnit
     public float timePassStarPlace = 0.0f;*/
     
     private Vector3 _randomVector;
+   
 
 
     private void Awake()
@@ -185,14 +186,15 @@ public class Player : FlyUnit
 
     //рух
     private void FlyToStar()
-    {
+    {               
         
         Quaternion lookRotation = Quaternion.LookRotation((waypoints[_starPosition].position - transform.position).normalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 2f * Time.deltaTime);      
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 2f * Time.deltaTime);   
     }
 
     private void FixedUpdate()
     {
+        
         _rb.AddForce(transform.forward * _speed * Time.deltaTime);
 
         if (_rb.position.y < (waypoints[_starPosition].position.y) && _speed > 0)
@@ -200,8 +202,8 @@ public class Player : FlyUnit
             _rb.AddForce(transform.up * _speedUp * Time.deltaTime);
         }
         
-
-        _rb.AddForce(_randomVector * (_speed / 7) * Time.deltaTime);       
+        //рандомно змінюється бокова сила
+       _rb.AddForce(_randomVector * (_speed / 4) * Time.deltaTime);       
 
     }
 
