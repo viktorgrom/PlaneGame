@@ -36,8 +36,6 @@ public class Player : FlyUnit
     public float timePassStarPlace = 0.0f;*/
     
     private Vector3 _randomVector;
-   
-
 
     private void Awake()
     {
